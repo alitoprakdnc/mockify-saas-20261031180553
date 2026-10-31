@@ -1,0 +1,78 @@
+{
+  "name": "Mockify SaaS",
+  "description": "Mockify is a cloud‑native platform that lets development teams define, version, and share OpenAPI contracts, automatically generate fully functional mock servers, and run contract‑based integration tests. Teams can publish contracts, spin up isolated mock endpoints for any environment, and integrate verification into CI/CD pipelines, reducing backend dependencies and accelerating front‑end development.",
+  "category": "Developer Tools",
+  "technologies": [
+    "Go",
+    "React",
+    "TypeScript",
+    "PostgreSQL",
+    "Docker",
+    "GitHub Actions",
+    "OpenAPI",
+    "Prisma"
+  ],
+  "files": [
+    {
+      "path": "backend/main.go",
+      "purpose": "Application entry point; initializes configuration, database connection, and starts the HTTP server."
+    },
+    {
+      "path": "backend/router.go",
+      "purpose": "Sets up Echo routes, registers handlers, and applies middleware."
+    },
+    {
+      "path": "backend/handler/mock_handler.go",
+      "purpose": "Implements endpoints that serve dynamically generated mock responses based on stored OpenAPI contracts."
+    },
+    {
+      "path": "backend/handler/contract_handler.go",
+      "purpose": "CRUD API for creating, reading, updating, and deleting OpenAPI contract definitions."
+    },
+    {
+      "path": "backend/middleware/auth_middleware.go",
+      "purpose": "JWT authentication middleware that validates tokens and injects user context into requests."
+    },
+    {
+      "path": "backend/config/config.go",
+      "purpose": "Loads environment variables, configures logger, and creates a PostgreSQL client using Prisma."
+    },
+    {
+      "path": "frontend/src/index.tsx",
+      "purpose": "Bootstraps the React application, attaches the root component to the DOM, and configures global providers."
+    },
+    {
+      "path": "frontend/src/App.tsx",
+      "purpose": "Defines the main layout, routing (React Router), and top‑level state management for contracts and mock servers."
+    },
+    {
+      "path": "frontend/src/components/ContractList.tsx",
+      "purpose": "Displays a paginated list of stored API contracts, with actions to view, edit, delete, or generate a mock server."
+    },
+    {
+      "path": "frontend/src/components/MockServerViewer.tsx",
+      "purpose": "Interactive UI that lets users send sample requests to a generated mock endpoint and view responses in real time."
+    },
+    {
+      "path": "db/schema.sql",
+      "purpose": "SQL DDL that creates tables for users, API contracts, version history, and audit logs."
+    },
+    {
+      "path": ".github/workflows/ci.yml",
+      "purpose": "GitHub Actions workflow that builds Docker images, runs unit & integration tests for Go and TypeScript, lints code, and deploys to a staging environment on merge."
+    }
+  ],
+  "features": [
+    "OpenAPI contract repository with versioning",
+    "One‑click mock server generation (HTTP/HTTPS)",
+    "JWT‑based multi‑tenant authentication & role management",
+    "Real‑time request/response inspector for mock endpoints",
+    "Contract‑driven integration test runner (Pact‑like)",
+    "CI/CD integration via GitHub Actions",
+    "Dashboard with usage analytics and mock server health",
+    "Export/Import contracts in JSON/YAML",
+    "Rate‑limited public mock URLs for external stakeholders"
+  ],
+  "architecture": "The system follows a micro‑service‑style SaaS architecture. The backend is a single Go service using the Echo framework, exposing REST endpoints for contract management and mock serving. Persistence is handled by PostgreSQL accessed through Prisma (via the Go‑Prisma client). The frontend is a React SPA written in TypeScript, communicating with the backend via a thin GraphQL gateway (future‑ready). Docker containers encapsulate the backend, frontend, and database; Docker Compose is used for local development while Kubernetes manifests are generated for production. Authentication is stateless JWT, and all endpoints are protected by the auth middleware. Mock generation parses stored OpenAPI specs with go-openapi and creates in‑memory request matchers, eliminating the need for separate mock server processes.",
+  "testing": "Backend unit tests (Go's testing package) cover handler logic, contract validation, and auth middleware. Integration tests spin up a Docker Compose stack, load sample contracts, and verify mock responses using HTTP test clients. Frontend uses Jest with React Testing Library for component unit tests and Cypress for end‑to‑end scenarios (login, contract CRUD, mock request flow). The CI workflow runs all test suites on every push, enforces coverage >80%, and fails the pipeline on linting or security scan issues."
+}
